@@ -1,1 +1,2 @@
-Im waiting for it
+#!/usr/bin/python3
+import this
