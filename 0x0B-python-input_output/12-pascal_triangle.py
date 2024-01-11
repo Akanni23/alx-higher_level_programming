@@ -1,4 +1,3 @@
-12-pascal_triangle.py
 #!/usr/bin/python3
 """Defines a Pascal's Triangle function."""
 
