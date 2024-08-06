@@ -1,22 +1,18 @@
-#!/usr/bin/env python3
-"""
-Fetches the content of a URL using urllib and prints it.
+#!/usr/bin/python3
+"""Fetches the URL: https://intranet.hbtn.io/status
 """
 
-import urllib.request
+from urllib.request import Request, urlopen
 
-def fetch_status():
-    """
-    Fetches the status from the URL.
-    """
-    url = "https://alx-intranet.hbtn.io/status"
-    try:
-        with urllib.request.urlopen(url) as response:
-            print("Body response:")
-            print("\t- type:", type(response.read()))
-            print("\t- content:", response.read().decode('utf-8'))
-    except Exception as e:
-        print("Error fetching data:", e)
 
 if __name__ == "__main__":
-    fetch_status()
+    req = Request('https://intranet.hbtn.io/status')
+
+    with urlopen(req) as res:
+        content = res.read()
+        utf8_content = content.decode('utf-8')
+
+        print('Body response:')
+        print('\t- type: {_type}'.format(_type=type(content)))
+        print('\t- content: {_content}'.format(_content=content))
+        print('\t- utf8 content: {_utf8_c}'.format(_utf8_c=utf8_content))
