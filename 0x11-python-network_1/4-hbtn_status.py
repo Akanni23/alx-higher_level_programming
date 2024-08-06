@@ -1,19 +1,14 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""Fetches the URL: https://intranet.hbtn.io/status
+with `requests` module
+"""
 
 import requests
 
-def fetch_status():
-    """
-    Fetches the content from the URL https://alx-intranet.hbtn.io/status using requests and displays it.
-    """
-    try:
-        response = requests.get("https://alx-intranet.hbtn.io/status")
-        response.raise_for_status()  # Raise an error for HTTP errors (status codes >= 400)
-        print("Body response:")
-        print("\t- type:", type(response.text))
-        print("\t- content:", response.text)
-    except requests.RequestException as e:
-        print("Error fetching data:", e)
 
 if __name__ == "__main__":
-    fetch_status()
+    req = requests.get('https://intranet.hbtn.io/status')
+
+    print('Body response:')
+    print('\t- type: {_type}'.format(_type=type(req.text)))
+    print('\t- content: {_content}'.format(_content=req.text))

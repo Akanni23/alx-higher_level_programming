@@ -1,32 +1,19 @@
+#!/usr/bin/python3
+"""List 10 commits (from the most recent to oldest)
+of a repository by user.
 
-#!/usr/bin/env python3
+This script use the Github API and print all commits
+by: `<sha>: <author name>` (one by line).
+"""
 
-import sys
+from sys import argv
 import requests
 
-def fetch_commits(repo_owner, repo_name, num_commits=10):
-    """
-    Fetches the specified number of most recent commits from a GitHub repository and prints them.
-    """
-    try:
-        url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits"
-        params = {'per_page': num_commits}
-        response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise an error for HTTP errors (status codes >= 400)
-
-        commits = response.json()
-        for commit in commits:
-            sha = commit['sha']
-            author_name = commit['commit']['author']['name']
-            print(f"{sha}: {author_name}")
-    except requests.RequestException as e:
-        print("Error fetching data:", e)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python script.py <repo_owner> <repo_name>")
-        sys.exit(1)
+    url = 'https://api.github.com'
+    uri = '{0}/repos/{1}/{2}/commits'.format(url, argv[2], argv[1])
+    req = requests.get(uri).json()
 
-    repo_owner = sys.argv[1]
-    repo_name = sys.argv[2]
-    fetch_commits(repo_owner, repo_name)
+    for com in req[0:10]:
+        print(com['sha'] + ':', com['commit']['author']['name'])

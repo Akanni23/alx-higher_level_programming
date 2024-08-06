@@ -1,26 +1,27 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""Takes in a letter and sends a POST request
+to `http://0.0.0.0:5000/search_user` with the
+letter as a parameter and with `requests` module.
+"""
 
-import sys
+from sys import argv
 import requests
 
-def search_user(letter):
-    """
-    Sends a POST request to http://0.0.0.0:5000/search_user with the letter as a parameter.
-    """
-    try:
-        url = "http://0.0.0.0:5000/search_user"
-        data = {'q': letter}
-        response = requests.post(url, data=data)
-        response.raise_for_status()  # Raise an error for HTTP errors (status codes >= 400)
-        
-        print(response.text)
-    except requests.RequestException as e:
-        print("Error sending POST request:", e)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <letter>")
-        sys.exit(1)
+    if len(argv) > 1:
+        q = argv[1]
+    else:
+        q = ''
 
-    letter = sys.argv[1]
-    search_user(letter)
+    try:
+        url = 'http://0.0.0.0:5000/search_user'
+        payload = {'q': q}
+        r = requests.post(url, payload).json()
+
+        if {'id', 'name'} <= r.keys():
+            print('[{id}] {name}'.format(id=r.get('id'), name=r.get('name')))
+        else:
+            print('No result')
+    except ValueError:
+        print('Not a valid JSON')

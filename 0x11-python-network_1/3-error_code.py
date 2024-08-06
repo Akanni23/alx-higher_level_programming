@@ -1,22 +1,22 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""Takes in a URL, sends a request to the URL and
+displays the body of the response (decoded in utf-8).
 
-import sys
-import urllib.request
-import urllib.error
+In addition, it handles HTTPError exceptions to print
+the HTTP Status Code, if an error occurs.
+"""
 
-def fetch_url(url):
-    """
-    Fetches the content from the URL and displays it.
-    """
-    try:
-        with urllib.request.urlopen(url) as response:
-            body = response.read().decode('utf-8')
-            print(body)
-    except urllib.error.HTTPError as e:
-        print("Error code:", e.code)
-    except Exception as e:
-        print("Error fetching data:", e)
+from sys import argv
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode
+from urllib.error import HTTPError
+
 
 if __name__ == "__main__":
-    url = sys.argv[1]
-    fetch_url(url)
+    req = Request(argv[1])
+
+    try:
+        with urlopen(req) as res:
+            print(res.read().decode('utf-8'))
+    except HTTPError as ex:
+        print('Error code:', ex.code)
